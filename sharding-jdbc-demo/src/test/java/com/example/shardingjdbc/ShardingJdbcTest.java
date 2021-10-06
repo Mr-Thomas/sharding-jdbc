@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class ShardingJdbcTest {
         order.setOrderAmount(BigDecimal.TEN);
         order.setOrderStatus(1);
 
-        LocalDateTime now = LocalDateTime.now().plusDays(1);
+        LocalDateTime now = LocalDateTime.now().plusDays(-2);
         Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
         order.setCreateTime(date);
         orderService.inser(order);
@@ -65,11 +68,21 @@ public class ShardingJdbcTest {
         log.info("orders:{},order:{}", JSONUtil.toJsonStr(orders)/*, JSONUtil.toJsonStr(order)*/);
     }
 
+    /**
+     * 时间范围动态查询分表
+     */
     @Test
     public void queryTest() {
         LocalDateTime now = LocalDateTime.now().plusDays(-1);
-        Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        List<Order> orders = orderMapper.queryByCreateTime(date, new Date());
+        Date end = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, -2);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        Date start = calendar.getTime();
+
+        List<Order> orders = orderMapper.queryByCreateTime(start, end);
         log.info("orders:{}", JSONUtil.toJsonStr(orders));
     }
 }

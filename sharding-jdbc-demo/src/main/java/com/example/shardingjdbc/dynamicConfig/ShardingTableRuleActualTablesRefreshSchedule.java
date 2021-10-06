@@ -39,7 +39,7 @@ public class ShardingTableRuleActualTablesRefreshSchedule implements Initializin
     @Autowired
     private OrderService orderService;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0/1 * * * * ?")
     public void refreshActualDataNodes() {
         try {
             ShardingDataSource shardingDataSource = (ShardingDataSource) this.dataSource;
@@ -70,7 +70,7 @@ public class ShardingTableRuleActualTablesRefreshSchedule implements Initializin
                 modifiersField.setAccessible(true);
                 modifiersField.setInt(actualDataNodesField, actualDataNodesField.getModifiers() & ~Modifier.FINAL);
                 actualDataNodesField.setAccessible(true);
-                LocalDateTime localDateTime = LocalDateTime.of(2021, 10, 5, 0, 0, new Random().nextInt(59));
+                LocalDateTime localDateTime = LocalDateTime.of(2021, 10, 4, 0, 0, new Random().nextInt(59));
                 LocalDateTime now = LocalDateTime.now();
                 String dataSourceName = dataNodes.get(0).getDataSourceName();
                 String logicTableName = tableRule.getLogicTable();

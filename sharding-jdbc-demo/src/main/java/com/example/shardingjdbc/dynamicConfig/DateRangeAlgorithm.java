@@ -1,5 +1,6 @@
 package com.example.shardingjdbc.dynamicConfig;
 
+import com.example.shardingjdbc.utils.StreamUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,12 @@ public class DateRangeAlgorithm implements RangeShardingAlgorithm<Date> {
         }
         Collection<String> tables = getRoutTable(rangeShardingValue.getLogicTableName(), lowerEndpoint, upperEndpoint);
         if (CollectionUtils.isNotEmpty(tables)) {
-            tableList.addAll(tables);
+            Map<String, String> map = StreamUtil.map(tables, String::new);
+            for (String s : collection) {
+                if (map.containsKey(s)) {
+                    tableList.add(s);
+                }
+            }
         }
         return tableList;
     }
