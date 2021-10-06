@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * @author ：Administrator
- * @description：TODO
+ * @description：TODO范围分片算法
  * @date ：2021/9/27 11:44
  */
 @Slf4j

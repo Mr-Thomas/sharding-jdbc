@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * @author ：Administrator
- * @description：TODO
+ * @description：TODO精准分表算法
  * @date ：2021/9/27 11:44
  */
 @Slf4j
