@@ -35,6 +35,7 @@ public class DateRangeAlgorithm implements RangeShardingAlgorithm<Date> {
         }
         Collection<String> tables = getRoutTable(rangeShardingValue.getLogicTableName(), lowerEndpoint, upperEndpoint);
         if (CollectionUtils.isNotEmpty(tables)) {
+            //返回时间范围内存在的分区表，过滤掉不存在的分区表
             Map<String, String> map = StreamUtil.map(tables, String::new);
             for (String s : collection) {
                 if (map.containsKey(s)) {
